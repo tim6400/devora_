@@ -20,7 +20,7 @@ export class ReportService {
 
         copyVal.report.startTime = this.getDateAsPastternFromDate(copyVal.report.startTime);
         copyVal.report.endTime = this.getDateAsPastternFromDate(copyVal.report.endTime);
-        return this.http.post(this.attendanceAPI, time);
+        return this.http.post(this.attendanceAPI, copyVal);
     }
 
     getHistory(): Observable<Report[]> {

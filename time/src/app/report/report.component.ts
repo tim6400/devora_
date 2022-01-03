@@ -80,7 +80,6 @@ export class AttendanceComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
 
     debugger
     if (this.fReport.endTime.value < this.fReport.startTime.value) {
@@ -100,7 +99,16 @@ export class AttendanceComponent implements OnInit {
         this.hedaer = 'עדכון הצליח';
         this.resMeesage = 'פעולה בוצעה בהצלחה'
         this.isShowAlert = true;
-        this.submitted = false;
+        this.alertType = "success"
+
+        // Clear all form
+        this.reportFileId = undefined;
+        this.formEmployee.reset();
+        this.formReport.reset();
+
+        setTimeout(() => {
+          this.selectTab(0)
+        }, 1000);
       })
   }
 
@@ -117,12 +125,9 @@ export class AttendanceComponent implements OnInit {
       startTime: new Date(),
       endTime: new Date(),
     });
-
-    this.submitted = false;
   }
 
   selectTab(tabId: number) {
-    debugger
     if (this.staticTabs?.tabs[tabId]) {
       this.staticTabs.tabs[tabId].active = true;
     }

@@ -14,8 +14,11 @@
                 <div class="d-flex justify-content-center mt-4">
                     <div class="form-group">
                         <label for="reportfileId">בחר מזהה תיק</label>
-                        <input class="form-control" name="reportFileId" [(ngModel)]="reportFileId">
-                        <small class="form-text text-muted">יש להזין נתון כדי לעבור לשלב הבא</small>
+                        <input class="form-control" #reportModel="ngModel" name="reportFileId"
+                            [(ngModel)]="reportFileId" required [ngClass]="{ 'is-invalid': reportModel.invalid }">
+                        <div class="invalid-feedback">
+                            <div *ngIf="reportModel.errors?.required">שדה חובה</div>
+                        </div>
                     </div>
                 </div>
 
@@ -69,32 +72,44 @@
                         <div class="form-group col-md-4">
                             <div class="form-group">
                                 <label for="">בחירת רחוב</label>
-                                <select class="form-control" formControlName="streetId">
+                                <select class="form-control" formControlName="streetId"
+                                    [ngClass]="{ 'is-invalid': fReport.streetId.errors }">
                                     <option *ngFor="let item of street" [value]="item.id">
                                         {{item.name}}
                                     </option>
                                 </select>
+                                <div *ngIf="fReport.streetId.errors" class="invalid-feedback">
+                                    <div *ngIf="fReport.streetId.errors.required">שדה תאריך חובה</div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputPassword4">ממספר בית</label>
-                            <select class="form-control" formControlName="startHomeNumber">
+                            <select class="form-control" formControlName="startHomeNumber"
+                                [ngClass]="{ 'is-invalid': fReport.startHomeNumber.errors }">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>
                                 <option>5</option>
                             </select>
+                            <div *ngIf="fReport.startHomeNumber.errors" class="invalid-feedback">
+                                <div *ngIf="fReport.startHomeNumber.errors.required">שדה תאריך חובה</div>
+                            </div>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputPassword4">עד מס בית</label>
-                            <select class="form-control" formControlName="endHomeNumber">
+                            <select class="form-control" formControlName="endHomeNumber"
+                                [ngClass]="{ 'is-invalid': fReport.endHomeNumber.errors }">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>
                                 <option>5</option>
                             </select>
+                            <div *ngIf="fReport.endHomeNumber.errors" class="invalid-feedback">
+                                <div *ngIf="fReport.endHomeNumber.errors.required">שדה תאריך חובה</div>
+                            </div>
                         </div>
                     </div>
 
@@ -102,7 +117,7 @@
                         <div class="form-group col-md-4">
                             <label for="">בחירת יום</label>
                             <input type="date" class="form-control" formControlName="date"
-                                [ngClass]="{ 'is-invalid': submitted && fReport.date.errors }">
+                                [ngClass]="{ 'is-invalid': fReport.date.errors }">
                             <div *ngIf="fReport.date.errors" class="invalid-feedback">
                                 <div *ngIf="fReport.date.errors.required">שדה תאריך חובה</div>
                             </div>
@@ -139,14 +154,14 @@
                         </button>
                     </div>
 
-                    <alert [type]="alertType" *ngIf="submitted" [dismissible]="dismissible"
+                    <alert [type]="alertType" *ngIf="isShowAlert" [dismissible]="dismissible"
                         (onClosed)="isShowAlert = false">
                         <strong>{{hedaer}}</strong> {{resMeesage}}
                     </alert>
                 </form>
             </tab>
             <tab heading="צפייה בהיסטוריה" (selectTab)="onSelectHistoryTab()">
-                <table class="table">
+                <table class="table header-fixed">
                     <thead>
                         <tr>
                             <th>שם העובד</th>
@@ -171,59 +186,5 @@
                 </table>
             </tab>
         </tabset>
-
-        <!-- <div class="d-flex justify-content-center">
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-                <div class="d-flex align-items-center">
-                    <div class="form-group">
-                        <label for="">בחירת יום</label>
-                        <input type="date" class="form-control" formControlName="date"
-                            [ngClass]="{ 'is-invalid': submitted && f.date.errors }">
-                        <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
-                            <div *ngIf="f.date.errors.required">שדה תאריך חובה</div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="startTime">שעת התחלה</label>
-                            <timepicker formControlName="startTime" [showMeridian]="isMeridian"
-                                [ngClass]="{ 'is-invalid': submitted && f.startTime.errors }"></timepicker>
-                            <div *ngIf="submitted && f.startTime.errors" class="invalid-feedback">
-                                <div *ngIf="f.startTime.errors.required">שעת התחלה חובה</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="startTime">שעת סיום</label>
-                            <timepicker formControlName="endTime" [showMeridian]="isMeridian"
-                                [ngClass]="{ 'is-invalid': submitted && f.endTime.errors }"></timepicker>
-                            <div *ngIf="submitted && f.endTime.errors" class="invalid-feedback">
-                                <div *ngIf="f.endTime.errors.required">שעת סיום חובה</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <alert [type]="alertType" *ngIf="submitted" [dismissible]="dismissible" (onClosed)="isResult = false">
-                    <strong>{{hedaer}}</strong> {{resMeesage}}
-                </alert>
-
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-default" (click)="resetDate()">
-                        איפוס תאריך
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                        עדכן
-                    </button>
-                </div>
-            </form>
-        </div> -->
     </div>
 </div>
