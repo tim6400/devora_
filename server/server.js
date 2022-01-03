@@ -28,27 +28,6 @@ app.get('/api/report/', function (req, res, next) {
 
 app.post('/api/report', function (req, res, next) {
 
-    // validate body
-
-    // Check if start bigger the end
-    var startDate = new Date(req.body.startTime);
-    var endDate = new Date(req.body.endTime);
-
-    // Check if both property is of type date
-    if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
-        return res.status(400).send({
-            message: 'startTime or endTime property not type of date'
-        });
-    }
-
-    if (endDate < startDate) {
-        return res.status(400).send({
-            message: 'The endDate is bigger then startDate'
-        });
-    }
-
-    // Data is valid
-
     // Read from file
     let rawdata = fs.readFileSync('reportData.json');
     let time = JSON.parse(rawdata);
