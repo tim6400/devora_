@@ -11,9 +11,9 @@ export class ApiService {
     private http: HttpClient,
   ) { }
 
-//   get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
-//     return this.http.get(`${environment.api_url}${path}`, { params: params, observe: 'response' })
-//   }
+  get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
+    return this.http.get(`${environment.api_url}${path}`)
+  }
 
   post(path: string, body: Object = {}): Observable<any> {
     return this.http.post(

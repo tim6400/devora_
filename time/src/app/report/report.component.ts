@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserLogin } from '../@core/models';
 import { UserService } from '../@core/services';
@@ -6,6 +6,8 @@ import { UserService } from '../@core/services';
 import * as moment from 'moment';
 import { ReportService } from '../@core/services/report.service';
 import { StreetService } from '../@core/services/street.service';
+import { TabsetComponent } from 'ngx-bootstrap/tabs';
+import { Report } from '../@core/models/report.model';
 
 
 @Component({
@@ -14,6 +16,8 @@ import { StreetService } from '../@core/services/street.service';
   styleUrls: ['./report.component.css']
 })
 export class AttendanceComponent implements OnInit {
+
+  @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
 
   formEmployee!: FormGroup;
   formReport!: FormGroup;
@@ -31,6 +35,7 @@ export class AttendanceComponent implements OnInit {
 
   reportFileId: any;
   street: any[] = [];
+  reportHistory: Report[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -114,5 +119,19 @@ export class AttendanceComponent implements OnInit {
     });
 
     this.submitted = false;
+  }
+
+  selectTab(tabId: number) {
+    debugger
+    if (this.staticTabs?.tabs[tabId]) {
+      this.staticTabs.tabs[tabId].active = true;
+    }
+  }
+
+  onSelectHistoryTab() {
+    this.reportService.getHistory()
+      .subscribe(item => {
+        this.reportHistory = item;
+      })
   }
 }

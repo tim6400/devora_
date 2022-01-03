@@ -19,16 +19,16 @@ app.get('/api/test', function (req, res, next) {
     res.json({ msg: 'This is CORS-enabled for all origins!' })
 })
 
-app.post('/api/time', function (req, res, next) {
+app.get('/api/report/', function (req, res, next) {
+    let rawdata = fs.readFileSync('reportData.json');
+    let time = JSON.parse(rawdata);
+
+    res.json(time);
+})
+
+app.post('/api/report', function (req, res, next) {
 
     // validate body
-
-    // Check if has startTime and endTime prop
-    if (!req.body.hasOwnProperty('startTime') || !req.body.hasOwnProperty('endTime')) {
-        return res.status(400).send({
-            message: 'No startTime or endTime property found'
-        });
-    }
 
     // Check if start bigger the end
     var startDate = new Date(req.body.startTime);
@@ -54,7 +54,7 @@ app.post('/api/time', function (req, res, next) {
     let time = JSON.parse(rawdata);
 
     // Add new data 
-    time.push({ startTime: startDate, endTime: endDate });
+    time.push(req.body);
 
     // Save data to file
     let json = JSON.stringify(time);
